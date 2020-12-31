@@ -4,10 +4,12 @@
   </div>
 </template>
 
+
 <script>
 import Nominate from "./components/Nominate.vue";
 
 export default {
+  //https://shoppiesbymerlin.netlify.app
   name: "Shoppies",
   components: {
     Nominate,

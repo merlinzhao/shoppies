@@ -31,7 +31,7 @@ export default {
     fetchMovies() {
       axios
         .get(
-          "http://www.omdbapi.com/?apikey=" +
+          "https://www.omdbapi.com/?apikey=" +
             this.apikey +
             "&s=" +
             this.inputField.value
