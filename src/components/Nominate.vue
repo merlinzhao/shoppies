@@ -85,6 +85,10 @@ export default {
   min-height: 800px;
   background: #222;
   margin: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 .card {
   background: blue;
@@ -111,6 +115,7 @@ label {
   color: #d3d3d3;
   transition: 0.2s all;
   cursor: text;
+  font-weight: 700;
 }
 input {
   width: 100%;
