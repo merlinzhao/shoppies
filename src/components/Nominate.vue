@@ -10,18 +10,32 @@
       />
       <label for="movie-name">Search Movie</label>
     </div>
+    <div class="row resultRow" style="background: green">
+      <div class="col-3 card" v-for="item in movieResults" :key="item.imdbID">
+        <MovieCard
+          :title="item.Title"
+          :year="item.Year"
+          :posterLink="item.Poster"
+        />
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import axios from "axios";
+import MovieCard from "./MovieCard.vue";
 export default {
+  components: {
+    MovieCard,
+  },
   data() {
     return {
       search: "",
       awaitingSearch: false,
       inputField: "",
       apikey: "8b8c26c3",
+      movieResults: {},
     };
   },
   mounted() {
@@ -37,8 +51,13 @@ export default {
             this.inputField.value
         )
         .then((response) => {
-          console.log(response.data);
-          console.log(response.data.Response);
+          let valid = response.data.Response;
+          if (valid) {
+            console.log(response.data);
+            this.movieResults = response.data.Search;
+          } else {
+            console.log("fetch not valid");
+          }
         })
         .catch(() => {
           console.log("ERROR FETCHING");
@@ -64,6 +83,18 @@ export default {
   width: 100vw;
   height: 100vh;
   min-height: 800px;
+  background: #222;
+  margin: 0;
+}
+.card {
+  background: blue;
+}
+.resultRow {
+  display: flex;
+  flex-direction: row;
+  width: 90%;
+  max-width: 1200px;
+  overflow: auto;
 }
 
 .input-field {
