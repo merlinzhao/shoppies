@@ -7,7 +7,9 @@
     <div>
       <p>{{ title }}<br />{{ year }}</p>
     </div>
-    <button class="nominate-button" type="button">NOMINATE</button>
+    <button v-on:click="nominate" class="nominate-button" type="button">
+      NOMINATE
+    </button>
   </div>
 </template>
 
@@ -19,9 +21,19 @@ export default {
     title: { type: String, default: "Title not found" },
     year: { type: String, default: "0000" },
     posterLink: { type: String, default: "NONE" },
+    movieID: { type: String, default: "NONE" },
   },
   data() {
     return {};
+  },
+  methods: {
+    nominate() {
+      this.$emit("nominate-data", {
+        Title: this.title,
+        Year: this.year,
+        ID: this.movieID,
+      });
+    },
   },
 };
 </script>
@@ -59,7 +71,7 @@ export default {
   cursor: pointer;
   position: relative;
   z-index: 0;
-  transition: background 0.3s ease-out;
+  transition: all 0.3s ease-out;
   border-radius: 5px;
 }
 
@@ -97,7 +109,7 @@ export default {
 }
 
 .nominate-button:active:after {
-  background: white;
+  background: rgb(255, 128, 69);
 }
 
 .nominate-button:hover:before {

@@ -1,22 +1,29 @@
 <template>
   <div class="nominate-bg">
-    <div class="input-field">
-      <input
-        v-model="search"
-        type="text"
-        id="movie-name"
-        maxlength="128"
-        required
-      />
-      <label for="movie-name">Search Movie</label>
-    </div>
-    <div class="row resultRow" style="background: green">
-      <div class="col-3 card" v-for="item in movieResults" :key="item.imdbID">
-        <MovieCard
-          :title="item.Title"
-          :year="item.Year"
-          :posterLink="item.Poster"
+    <div class="center">
+      <div class="input-field">
+        <input
+          v-model="search"
+          type="text"
+          id="movie-name"
+          maxlength="128"
+          required
         />
+        <label for="movie-name">Search Movie</label>
+      </div>
+      <div class="row resultRow" style="background: green">
+        <div class="col-3 card" v-for="item in movieResults" :key="item.imdbID">
+          <MovieCard
+            :title="item.Title"
+            :year="item.Year"
+            :posterLink="item.Poster"
+            :movieID="item.imdbID"
+            @nominate-data="nominateMovie"
+          />
+        </div>
+      </div>
+      <div class="show-nominations">
+        <p v-for="movie in userNominations" :key="movie">movie</p>
       </div>
     </div>
   </div>
@@ -36,6 +43,7 @@ export default {
       inputField: "",
       apikey: "8b8c26c3",
       movieResults: {},
+      userNominations: {},
     };
   },
   mounted() {
@@ -47,7 +55,7 @@ export default {
         .get(
           "https://www.omdbapi.com/?apikey=" +
             this.apikey +
-            "&s=" +
+            "&type=movie&r=json&s=" +
             this.inputField.value
         )
         .then((response) => {
@@ -62,6 +70,16 @@ export default {
         .catch(() => {
           console.log("ERROR FETCHING");
         });
+    },
+    nominateMovie(e) {
+      if (e.ID in this.userNominations) {
+        console.log("already nominated");
+        return;
+      }
+      this.userNominations[e.ID] = e.ID;
+      console.log(this.userNominations);
+
+      this.$emit("user-nominated", this.userNominations);
     },
   },
   watch: {
@@ -90,8 +108,14 @@ export default {
   justify-content: center;
   align-items: center;
 }
+.center {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
 .card {
-  background: blue;
+  background: #ddd;
 }
 .resultRow {
   display: flex;
@@ -103,26 +127,28 @@ export default {
 
 .input-field {
   position: relative;
-  width: 250px;
-  height: 44px;
-  line-height: 44px;
+  width: 450px;
+  height: 80px;
+  line-height: 80px;
+  font-size: 25px;
 }
 label {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
-  color: #d3d3d3;
+  color: #aaaaaa;
   transition: 0.2s all;
   cursor: text;
   font-weight: 700;
 }
 input {
   width: 100%;
+  height: 25px;
   border: 0;
   outline: 0;
   padding: 0.5rem 0;
-  border-bottom: 2px solid #d3d3d3;
+  border-bottom: 2px solid #838383;
   box-shadow: none;
   color: #111;
 }
@@ -133,8 +159,8 @@ input:valid {
 }
 input:focus ~ label,
 input:valid ~ label {
-  font-size: 14px;
-  top: -24px;
+  font-size: 16px;
+  top: -33px;
   color: #00dd22;
 }
 </style>
