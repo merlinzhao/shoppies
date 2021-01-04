@@ -7,8 +7,13 @@
     <div>
       <p>{{ title }}<br />{{ year }}</p>
     </div>
-    <button v-on:click="nominate" class="nominate-button" type="button">
-      NOMINATE
+    <button
+      v-on:click="nominate"
+      class="nominate-button"
+      type="button"
+      :id="`nomBtn_${movieID}`"
+    >
+      {{ nominateTxt }}
     </button>
   </div>
 </template>
@@ -22,17 +27,33 @@ export default {
     year: { type: String, default: "0000" },
     posterLink: { type: String, default: "NONE" },
     movieID: { type: String, default: "NONE" },
+    userNom: { type: Object, default: () => {} },
   },
   data() {
-    return {};
+    return { nominateTxt: "NOMINATE" };
+  },
+  mounted() {
+    if (this.movieID in this.userNom) {
+      console.log(this.title + " already nominated");
+      this.alreadyNominated();
+    }
   },
   methods: {
     nominate() {
+      this.alreadyNominated();
       this.$emit("nominate-data", {
         Title: this.title,
         Year: this.year,
         ID: this.movieID,
       });
+    },
+    alreadyNominated() {
+      let btnID = "nomBtn_" + this.movieID;
+      let btn = document.getElementById(btnID);
+      btn.disabled = true;
+      btn.classList.add("nominate-button-disabled");
+      document.getElementById(btnID).disabled = true;
+      this.nominateTxt = "NOMINATED";
     },
   },
 };
@@ -126,6 +147,13 @@ export default {
   left: 0;
   top: 0;
   border-radius: 5px;
+}
+
+.nominate-button-disabled {
+  background: #555 !important;
+}
+.nominate-button-disabled:after {
+  background: #555 !important;
 }
 
 @keyframes glowing {

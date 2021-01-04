@@ -18,12 +18,15 @@
             :year="item.Year"
             :posterLink="item.Poster"
             :movieID="item.imdbID"
+            :userNom="userNominations"
             @nominate-data="nominateMovie"
           />
         </div>
       </div>
       <div class="show-nominations">
-        <p v-for="movie in userNominations" :key="movie">movie</p>
+        <div class="nomBox" v-for="movie in userNominations" :key="movie.ID">
+          {{ movie.Title }}
+        </div>
       </div>
     </div>
   </div>
@@ -76,8 +79,9 @@ export default {
         console.log("already nominated");
         return;
       }
-      this.userNominations[e.ID] = e.ID;
-      console.log(this.userNominations);
+
+      this.$set(this.userNominations, e.ID, e);
+      console.log("added" + e.Title + "to list of nominatons");
 
       this.$emit("user-nominated", this.userNominations);
     },
@@ -109,6 +113,8 @@ export default {
   align-items: center;
 }
 .center {
+  max-width: 1400px;
+  width: 90%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -120,8 +126,7 @@ export default {
 .resultRow {
   display: flex;
   flex-direction: row;
-  width: 90%;
-  max-width: 1200px;
+  width: 100%;
   overflow: auto;
 }
 
@@ -131,6 +136,8 @@ export default {
   height: 80px;
   line-height: 80px;
   font-size: 25px;
+  background: #555;
+  width: 100%;
 }
 label {
   position: absolute;
@@ -162,5 +169,13 @@ input:valid ~ label {
   font-size: 16px;
   top: -33px;
   color: #00dd22;
+}
+
+/* NOMINATION BOX */
+.nomBox {
+  height: 50px;
+  width: 100%;
+  margin: 5px 0 5px 0;
+  background: #555;
 }
 </style>
