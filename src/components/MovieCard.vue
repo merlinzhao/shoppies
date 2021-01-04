@@ -82,7 +82,7 @@ export default {
   height: calc(480px - 10px);
   width: calc(250px - 10px);
   margin: 5px;
-  background: #171717;
+  background: #222;
   color: #aaa;
   font-weight: 700;
 }

@@ -29,7 +29,12 @@
         </div>
       </div>
       <div class="show-nominations">
-        <h1 class="your-head">Your 2020 Nominations</h1>
+        <h1 class="your-head">Your 2021 Nominations</h1>
+        <p class="your-text">
+          Nominate up to 5 films that you think deserve a 2021 Shoppie. Your
+          nominations below will be submitted automatically on 11:59pm Janurary
+          17, 2021.
+        </p>
         <div class="row resultRow">
           <div
             class="col card"
@@ -69,6 +74,7 @@ export default {
       userNominations: {},
       loading: false,
       notLoading: true,
+      showPrompt: true,
     };
   },
   mounted() {
@@ -136,7 +142,7 @@ export default {
 
 <style scoped>
 .nominate-bg {
-  width: 100vw;
+  width: 100%;
 
   min-height: 800px;
   background: #222;
@@ -147,6 +153,7 @@ export default {
   align-items: center;
 }
 .center {
+  min-width: 500px;
   max-width: 1300px;
   width: 90%;
   display: flex;
@@ -155,7 +162,7 @@ export default {
   align-items: center;
 }
 .card {
-  background: #555;
+  background: #444;
 }
 
 .showResults {
@@ -164,11 +171,6 @@ export default {
   margin-bottom: 20px;
 }
 
-.show-nominations {
-  width: 100%;
-  background: #444;
-  margin-bottom: 100px;
-}
 .resultRow {
   display: flex;
   flex-direction: row;
@@ -183,7 +185,7 @@ export default {
   height: 180px;
   line-height: 80px;
   font-size: 25px;
-  background: #555;
+  background: #444;
   width: 100%;
 
   display: flex;
@@ -228,15 +230,19 @@ input:valid ~ label {
 }
 
 /* NOMINATION BOX */
-.nomBox {
-  height: 50px;
-  width: 100%;
-  margin: 5px 0 5px 0;
-  background: #555;
-}
 
+.show-nominations {
+  width: 100%;
+  background: #444;
+  margin-bottom: 100px;
+}
 .your-head {
   color: #98f50c;
+  margin: 20px 0 10px 0;
+}
+.your-text {
+  color: #98f50c;
+  margin: 0px 30px 20px 30px;
 }
 
 /* LOADING ANIMATIONS */

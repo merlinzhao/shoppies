@@ -6,6 +6,7 @@
 .banner-bg {
   height: 60vh;
   width: 100%;
+  min-width: 500px;
   background: black;
   display: flex;
   flex-direction: column;
