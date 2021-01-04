@@ -28,24 +28,37 @@ export default {
     posterLink: { type: String, default: "NONE" },
     movieID: { type: String, default: "NONE" },
     userNom: { type: Object, default: () => {} },
+    type: { type: String, default: "nominate" },
   },
   data() {
     return { nominateTxt: "NOMINATE" };
   },
   mounted() {
-    if (this.movieID in this.userNom) {
-      console.log(this.title + " already nominated");
-      this.alreadyNominated();
+    if (this.type == "nominate") {
+      if (this.movieID in this.userNom) {
+        console.log(this.title + " already nominated");
+        this.alreadyNominated();
+      }
+    } else if (this.type == "remove") {
+      this.setRemove();
     }
   },
   methods: {
     nominate() {
-      this.alreadyNominated();
-      this.$emit("nominate-data", {
-        Title: this.title,
-        Year: this.year,
-        ID: this.movieID,
-      });
+      if (this.type == "nominate") {
+        if (Object.keys(this.userNom).length < 5) {
+          this.alreadyNominated();
+        }
+        this.$emit("nominate-data", {
+          Title: this.title,
+          Year: this.year,
+          ID: this.movieID,
+          Poster: this.posterLink,
+        });
+        console.log(Object.keys(this.userNom).length);
+      } else if (this.type == "remove") {
+        this.$emit("remove-nominate", this.movieID);
+      }
     },
     alreadyNominated() {
       let btnID = "nomBtn_" + this.movieID;
@@ -54,6 +67,9 @@ export default {
       btn.classList.add("nominate-button-disabled");
       document.getElementById(btnID).disabled = true;
       this.nominateTxt = "NOMINATED";
+    },
+    setRemove() {
+      this.nominateTxt = "REMOVE";
     },
   },
 };

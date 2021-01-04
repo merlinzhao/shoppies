@@ -9,23 +9,41 @@
           maxlength="128"
           required
         />
-        <label for="movie-name">Search Movie</label>
+        <label for="movie-name">Search Films</label>
       </div>
-      <div class="row resultRow" style="background: green">
-        <div class="col-3 card" v-for="item in movieResults" :key="item.imdbID">
-          <MovieCard
-            :title="item.Title"
-            :year="item.Year"
-            :posterLink="item.Poster"
-            :movieID="item.imdbID"
-            :userNom="userNominations"
-            @nominate-data="nominateMovie"
-          />
+      <div class="showResults">
+        <div class="row resultRow">
+          <div class="col card" v-for="item in movieResults" :key="item.imdbID">
+            <MovieCard
+              :title="item.Title"
+              :year="item.Year"
+              :posterLink="item.Poster"
+              :movieID="item.imdbID"
+              :userNom="userNominations"
+              :type="'nominate'"
+              @nominate-data="nominateMovie"
+            />
+          </div>
         </div>
       </div>
       <div class="show-nominations">
-        <div class="nomBox" v-for="movie in userNominations" :key="movie.ID">
-          {{ movie.Title }}
+        <h1 class="your-head">Your 2020 Nominations</h1>
+        <div class="row resultRow">
+          <div
+            class="col card"
+            v-for="item in userNominations"
+            :key="item.imdbID"
+          >
+            <MovieCard
+              :title="item.Title"
+              :year="item.Year"
+              :posterLink="item.Poster"
+              :movieID="item.ID"
+              :userNom="userNominations"
+              :type="'remove'"
+              @remove-nominate="removeNomination"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -75,15 +93,21 @@ export default {
         });
     },
     nominateMovie(e) {
+      let length = Object.keys(this.userNominations).length;
+      if (length >= 5) {
+        console.log("CANNOT NOMINATE ANYMORE");
+        return;
+      }
+
       if (e.ID in this.userNominations) {
         console.log("already nominated");
         return;
       }
-
       this.$set(this.userNominations, e.ID, e);
-      console.log("added" + e.Title + "to list of nominatons");
-
       this.$emit("user-nominated", this.userNominations);
+    },
+    removeNomination(e) {
+      this.$delete(this.userNominations, e);
     },
   },
   watch: {
@@ -103,7 +127,7 @@ export default {
 <style scoped>
 .nominate-bg {
   width: 100vw;
-  height: 100vh;
+
   min-height: 800px;
   background: #222;
   margin: 0;
@@ -113,7 +137,7 @@ export default {
   align-items: center;
 }
 .center {
-  max-width: 1400px;
+  max-width: 1300px;
   width: 90%;
   display: flex;
   flex-direction: column;
@@ -123,6 +147,18 @@ export default {
 .card {
   background: #ddd;
 }
+
+.showResults {
+  width: 100%;
+  background: #111;
+  margin-bottom: 20px;
+}
+
+.show-nominations {
+  width: 100%;
+  background: #444;
+  margin-bottom: 100px;
+}
 .resultRow {
   display: flex;
   flex-direction: row;
@@ -131,33 +167,43 @@ export default {
 }
 
 .input-field {
+  margin: 70px 0 20px 0;
   position: relative;
   width: 450px;
-  height: 80px;
+  height: 180px;
   line-height: 80px;
   font-size: 25px;
   background: #555;
   width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 label {
   position: absolute;
-  top: 0;
+  top: 50px;
   left: 0;
   width: 100%;
-  color: #aaaaaa;
+  color: #00dd22;
   transition: 0.2s all;
   cursor: text;
   font-weight: 700;
 }
 input {
-  width: 100%;
+  width: 88%;
   height: 25px;
   border: 0;
   outline: 0;
-  padding: 0.5rem 0;
+  padding: 0.5rem 15px;
+  text-align: center;
   border-bottom: 2px solid #838383;
+  background: rgb(49, 49, 49);
   box-shadow: none;
-  color: #111;
+  color: white;
+  font-size: 25px;
+  border-radius: 5px;
 }
 
 input:focus,
@@ -166,8 +212,8 @@ input:valid {
 }
 input:focus ~ label,
 input:valid ~ label {
-  font-size: 16px;
-  top: -33px;
+  font-size: 22px;
+  top: -0px;
   color: #00dd22;
 }
 
@@ -177,5 +223,9 @@ input:valid ~ label {
   width: 100%;
   margin: 5px 0 5px 0;
   background: #555;
+}
+
+.your-head {
+  color: #00dd22;
 }
 </style>
