@@ -103,8 +103,9 @@ export default {
   height: 40px;
   border: none;
   outline: none;
-  color: #fff;
-  background: rgb(255, 187, 0);
+  color: #111;
+  font-weight: 700;
+  background: #98f50c;
   cursor: pointer;
   position: relative;
   z-index: 0;
@@ -116,15 +117,13 @@ export default {
   content: "";
   background: linear-gradient(
     45deg,
-    #ff0000,
-    #ff7300,
-    #fffb00,
-    #48ff00,
-    #00ffd5,
-    #002bff,
-    #7a00ff,
-    #ff00c8,
-    #ff0000
+    #f4f524,
+    #8fdc18,
+    #8dbd3c,
+    #98f50c,
+    #8fdc18,
+    #f4f524,
+    #00dd22
   );
   position: absolute;
   top: -2px;
@@ -146,7 +145,7 @@ export default {
 }
 
 .nominate-button:active:after {
-  background: rgb(255, 128, 69);
+  background: #72b906;
 }
 
 .nominate-button:hover:before {
@@ -159,7 +158,7 @@ export default {
   position: absolute;
   width: 100%;
   height: 100%;
-  background: rgb(255, 187, 0);
+  background: #98f50c;
   left: 0;
   top: 0;
   border-radius: 5px;

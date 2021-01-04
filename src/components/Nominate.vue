@@ -13,8 +13,10 @@
       </div>
       <div class="showResults">
         <div class="row resultRow">
+          <div class="loader" v-if="loading"></div>
           <div class="col card" v-for="item in movieResults" :key="item.imdbID">
             <MovieCard
+              v-if="notLoading"
               :title="item.Title"
               :year="item.Year"
               :posterLink="item.Poster"
@@ -65,6 +67,8 @@ export default {
       apikey: "8b8c26c3",
       movieResults: {},
       userNominations: {},
+      loading: false,
+      notLoading: true,
     };
   },
   mounted() {
@@ -72,25 +76,31 @@ export default {
   },
   methods: {
     fetchMovies() {
-      axios
-        .get(
-          "https://www.omdbapi.com/?apikey=" +
-            this.apikey +
-            "&type=movie&r=json&s=" +
-            this.inputField.value
-        )
-        .then((response) => {
-          let valid = response.data.Response;
-          if (valid) {
-            console.log(response.data);
-            this.movieResults = response.data.Search;
-          } else {
-            console.log("fetch not valid");
-          }
-        })
-        .catch(() => {
-          console.log("ERROR FETCHING");
-        });
+      this.loading = true;
+      (this.notLoading = false),
+        axios
+          .get(
+            "https://www.omdbapi.com/?apikey=" +
+              this.apikey +
+              "&type=movie&r=json&s=" +
+              this.inputField.value
+          )
+          .then((response) => {
+            let valid = response.data.Response;
+            if (valid) {
+              console.log(response.data);
+              this.movieResults = response.data.Search;
+            } else {
+              console.log("fetch not valid");
+            }
+          })
+          .catch(() => {
+            console.log("ERROR FETCHING");
+          })
+          .finally(() => {
+            this.loading = false;
+            this.notLoading = true;
+          });
     },
     nominateMovie(e) {
       let length = Object.keys(this.userNominations).length;
@@ -145,7 +155,7 @@ export default {
   align-items: center;
 }
 .card {
-  background: #ddd;
+  background: #555;
 }
 
 .showResults {
@@ -186,7 +196,7 @@ label {
   top: 50px;
   left: 0;
   width: 100%;
-  color: #00dd22;
+  color: #98f50c;
   transition: 0.2s all;
   cursor: text;
   font-weight: 700;
@@ -208,13 +218,13 @@ input {
 
 input:focus,
 input:valid {
-  border-color: #00dd22;
+  border-color: #98f50c;
 }
 input:focus ~ label,
 input:valid ~ label {
   font-size: 22px;
   top: -0px;
-  color: #00dd22;
+  color: #98f50c;
 }
 
 /* NOMINATION BOX */
@@ -226,6 +236,75 @@ input:valid ~ label {
 }
 
 .your-head {
-  color: #00dd22;
+  color: #98f50c;
+}
+
+/* LOADING ANIMATIONS */
+.loader,
+.loader:before,
+.loader:after {
+  border-radius: 50%;
+}
+.loader {
+  color: #98f50c;
+  font-size: 11px;
+  text-indent: -99999em;
+  margin: 55px auto;
+  position: relative;
+  width: 10em;
+  height: 10em;
+  box-shadow: inset 0 0 0 1em;
+  -webkit-transform: translateZ(0);
+  -ms-transform: translateZ(0);
+  transform: translateZ(0);
+}
+.loader:before,
+.loader:after {
+  position: absolute;
+  content: "";
+}
+.loader:before {
+  width: 5.2em;
+  height: 10.2em;
+  background: #111;
+  border-radius: 10.2em 0 0 10.2em;
+  top: -0.1em;
+  left: -0.1em;
+  -webkit-transform-origin: 5.1em 5.1em;
+  transform-origin: 5.1em 5.1em;
+  -webkit-animation: load2 2s infinite ease 1.5s;
+  animation: load2 2s infinite ease 1.5s;
+}
+.loader:after {
+  width: 5.2em;
+  height: 10.2em;
+  background: #111;
+  border-radius: 0 10.2em 10.2em 0;
+  top: -0.1em;
+  left: 4.9em;
+  -webkit-transform-origin: 0.1em 5.1em;
+  transform-origin: 0.1em 5.1em;
+  -webkit-animation: load2 2s infinite ease;
+  animation: load2 2s infinite ease;
+}
+@-webkit-keyframes load2 {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@keyframes load2 {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
 }
 </style>
