@@ -1,5 +1,8 @@
 <template>
-  <div class="banner-bg"><h1 class="main-head">2021 Shoppies Awards</h1></div>
+  <div class="banner-bg">
+    <div class="banner-img"></div>
+    <h1 class="main-head">2021 Shoppies Awards</h1>
+  </div>
 </template>
 
 <style scoped>
@@ -14,8 +17,22 @@
   align-items: center;
 }
 .main-head {
-  color: #00dd22;
-  font-size: 55px;
+  color: #98f50c;
+  font-size: 65px;
   text-align: center;
+  z-index: 100;
+}
+
+.banner-img {
+  position: absolute;
+  background-image: url("../assets/theater.png");
+
+  height: 60vh;
+  width: 100%;
+  background-repeat: no-repeat;
+  background-position: center center;
+  align-items: center;
+  background-size: cover;
+  filter: saturate(0%);
 }
 </style>
