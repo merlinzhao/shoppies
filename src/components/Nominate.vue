@@ -13,7 +13,9 @@
       </div>
       <div class="showResults">
         <div class="row resultRow">
-          <div class="loader" v-if="loading"></div>
+          <div class="loader-box" v-if="loading">
+            <div class="loader"></div>
+          </div>
           <div class="col card" v-for="item in movieResults" :key="item.imdbID">
             <MovieCard
               v-if="notLoading"
@@ -25,6 +27,10 @@
               :type="'nominate'"
               @nominate-data="nominateMovie"
             />
+          </div>
+          <div v-if="showPrompt" class="show-prompt">
+            <h2 class="your-head">{{ promptHead }}</h2>
+            <p class="your-text">{{ promptText }}</p>
           </div>
         </div>
       </div>
@@ -75,6 +81,9 @@ export default {
       loading: false,
       notLoading: true,
       showPrompt: true,
+      promptHead: "Start Nominating",
+      promptText:
+        "words words words words words words words words words words words",
     };
   },
   mounted() {
@@ -83,6 +92,8 @@ export default {
   methods: {
     fetchMovies() {
       this.loading = true;
+      this.showPrompt = false;
+      this.promptHead = "Start Nominating";
       (this.notLoading = false),
         axios
           .get(
@@ -93,11 +104,20 @@ export default {
           )
           .then((response) => {
             let valid = response.data.Response;
-            if (valid) {
+            if (valid == "True") {
               console.log(response.data);
               this.movieResults = response.data.Search;
             } else {
-              console.log("fetch not valid");
+              if (response.data.Error == "Too many results.") {
+                this.promptHead = "Alter your search.";
+                this.promptText =
+                  "Please be more specific with your search. We were unable to find the films you are looking for.";
+              } else {
+                this.promptHead = "Start Nominating";
+                this.promptText =
+                  "words words words words words words words words words words words";
+              }
+              this.showPrompt = true;
             }
           })
           .catch(() => {
@@ -106,6 +126,10 @@ export default {
           .finally(() => {
             this.loading = false;
             this.notLoading = true;
+
+            if (!this.movieResults) {
+              this.showPrompt = true;
+            }
           });
     },
     nominateMovie(e) {
@@ -229,7 +253,13 @@ input:valid ~ label {
   color: #98f50c;
 }
 
-/* NOMINATION BOX */
+/* PROMPT BOX ====================*/
+.show-prompt {
+  height: 500px;
+  width: 100%;
+}
+
+/* NOMINATION BOX ====================*/
 
 .show-nominations {
   width: 100%;
@@ -245,7 +275,16 @@ input:valid ~ label {
   margin: 0px 30px 20px 30px;
 }
 
-/* LOADING ANIMATIONS */
+/* LOADING ANIMATIONS ================*/
+
+.loader-box {
+  width: 100%;
+  height: 500px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
 .loader,
 .loader:before,
 .loader:after {
@@ -256,7 +295,9 @@ input:valid ~ label {
   font-size: 11px;
   text-indent: -99999em;
   margin: 55px auto;
-  position: relative;
+  position: absolute;
+
+  left: 45%;
   width: 10em;
   height: 10em;
   box-shadow: inset 0 0 0 1em;
