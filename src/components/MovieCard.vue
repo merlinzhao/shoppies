@@ -36,7 +36,6 @@ export default {
   mounted() {
     if (this.type == "nominate") {
       if (this.movieID in this.userNom) {
-        console.log(this.title + " already nominated");
         this.alreadyNominated();
       }
     } else if (this.type == "remove") {
@@ -55,7 +54,6 @@ export default {
           ID: this.movieID,
           Poster: this.posterLink,
         });
-        console.log(Object.keys(this.userNom).length);
       } else if (this.type == "remove") {
         this.$emit("remove-nominate", this.movieID);
       }

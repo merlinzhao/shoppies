@@ -105,7 +105,6 @@ export default {
           .then((response) => {
             let valid = response.data.Response;
             if (valid == "True") {
-              console.log(response.data);
               this.movieResults = response.data.Search;
             } else {
               if (response.data.Error == "Too many results.") {
@@ -118,6 +117,7 @@ export default {
                   "Search for a movie that you want to see win a Shoppie. You may nominate up to 5 films.";
               }
               this.showPrompt = true;
+              this.movieResults = {};
             }
           })
           .catch(() => {
@@ -135,12 +135,9 @@ export default {
     nominateMovie(e) {
       let length = Object.keys(this.userNominations).length;
       if (length >= 5) {
-        console.log("CANNOT NOMINATE ANYMORE");
         return;
       }
-
       if (e.ID in this.userNominations) {
-        console.log("already nominated");
         return;
       }
       this.$set(this.userNominations, e.ID, e);
@@ -196,7 +193,7 @@ export default {
 
 .showResults {
   width: 100%;
-  background: #111;
+  background: #444;
   margin-bottom: 20px;
 }
 
@@ -262,6 +259,7 @@ input:valid ~ label {
 .show-prompt {
   height: 500px;
   width: 100%;
+  background: #444;
 }
 
 /* NOMINATION BOX ====================*/
@@ -276,7 +274,7 @@ input:valid ~ label {
   margin: 20px 0 10px 0;
 }
 .your-text {
-  color: #98f50c;
+  color: rgb(216, 255, 209);
   margin: 0px 30px 20px 30px;
 }
 
@@ -318,7 +316,7 @@ input:valid ~ label {
 .loader:before {
   width: 5.2em;
   height: 10.2em;
-  background: #111;
+  background: #444;
   border-radius: 10.2em 0 0 10.2em;
   top: -0.1em;
   left: -0.1em;
@@ -330,7 +328,7 @@ input:valid ~ label {
 .loader:after {
   width: 5.2em;
   height: 10.2em;
-  background: #111;
+  background: #444;
   border-radius: 0 10.2em 10.2em 0;
   top: -0.1em;
   left: 4.9em;
