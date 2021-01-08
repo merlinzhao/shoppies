@@ -1,5 +1,7 @@
 # shoppies
 
+[View the project here](https://shoppiesbymerlin.netlify.app).
+
 ## Project setup
 ```
 npm install
