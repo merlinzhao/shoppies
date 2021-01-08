@@ -83,7 +83,7 @@ export default {
       showPrompt: true,
       promptHead: "Start Nominating",
       promptText:
-        "words words words words words words words words words words words",
+        "Search for a movie that you want to see win a Shoppie. You may nominate up to 5 films.",
     };
   },
   mounted() {
@@ -115,7 +115,7 @@ export default {
               } else {
                 this.promptHead = "Start Nominating";
                 this.promptText =
-                  "words words words words words words words words words words words";
+                  "Search for a movie that you want to see win a Shoppie. You may nominate up to 5 films.";
               }
               this.showPrompt = true;
             }
@@ -148,6 +148,11 @@ export default {
     },
     removeNomination(e) {
       this.$delete(this.userNominations, e);
+      this.showPrompt = true;
+      this.promptHead = "Start Nominating";
+      this.promptText =
+        "Search for a movie that you want to see win a Shoppie. You may nominate up to 5 films.";
+      this.movieResults = {};
     },
   },
   watch: {
