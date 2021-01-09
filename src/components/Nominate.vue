@@ -37,9 +37,7 @@
       <div class="show-nominations">
         <h1 class="your-head">Your 2021 Nominations</h1>
         <p class="your-text">
-          Nominate up to 5 films that you think deserve a 2021 Shoppie. Your
-          nominations below will be submitted automatically on 11:59pm Janurary
-          17, 2021.
+          {{ yourText }}
         </p>
         <div class="row resultRow">
           <div
@@ -84,6 +82,8 @@ export default {
       promptHead: "Start Nominating",
       promptText:
         "Search for a movie that you want to see win a Shoppie. You may nominate up to 5 films.",
+      yourText:
+        "Nominate up to 5 films that you think deserve a 2021 Shoppie. Your nominations below will be submitted automatically on 11:59pm Janurary 17, 2021.",
     };
   },
   mounted() {
@@ -140,6 +140,10 @@ export default {
       if (e.ID in this.userNominations) {
         return;
       }
+      if (length == 4) {
+        this.yourText =
+          "You have nominated a maximum of 5 films for the 2021 Shoppie Awards. If you wish to change your nominations, remove one from your list and nominate another film. You may remove nominations up until 11:59pm on Janurary 17, 2021.";
+      }
       this.$set(this.userNominations, e.ID, e);
       this.$emit("user-nominated", this.userNominations);
     },
@@ -147,6 +151,8 @@ export default {
       this.$delete(this.userNominations, e);
       this.showPrompt = true;
       this.promptHead = "Start Nominating";
+      this.yourText =
+        "Nominate up to 5 films that you think deserve a 2021 Shoppie. Your nominations below will be submitted automatically at 11:59pm on Janurary 17, 2021.";
       this.promptText =
         "Search for a movie that you want to see win a Shoppie. You may nominate up to 5 films.";
       this.movieResults = {};
