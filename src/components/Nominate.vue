@@ -9,7 +9,7 @@
           maxlength="128"
           required
         />
-        <label for="movie-name">Search Films</label>
+        <label for="movie-name">Search Films </label>
       </div>
       <div class="showResults">
         <div class="row resultRow">
